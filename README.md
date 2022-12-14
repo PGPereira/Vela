@@ -2,9 +2,9 @@
 
 ## Autores
 * Julio Guatimosim
-* Pedro Gabriel
+* ![Pedro Gabriel](https://github.com/PGPereira)
 * Tiago Cornélio
-* Rafael
+* Rafael Bicalho
 
 ## Descrição
 Uma sala de paredes escuras com exceção de uma delas, que é um tecido branco iluminado por trás. Seu aspecto é o de uma vela de navio agitada pelo vento, serve de tela, na qual são projetadas sombras de figuras humanas. Sons formam uma ambiência contínua e sutil que remete ao mar e ao fogo, além de incidências de vozes abafadas e indistintas que acompanham as sombras.  
