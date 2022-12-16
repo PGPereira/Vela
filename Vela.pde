@@ -15,7 +15,7 @@ Sombras sombras;
 Sombra sombra;
 
 void setup() {
-  size(1280, 480);
+  fullScreen();
   kinect = new SimpleOpenNI(this);
   kinect.enableDepth();
   kinect.enableUser();
@@ -23,7 +23,7 @@ void setup() {
   userList = new IntVector();
   sombra = new Sombra();
   sombras = new Sombras();
-  opencv = new OpenCV(this, 640, 480);  
+  opencv = new OpenCV(this, width, height);  
 }
 
 void draw() {
@@ -34,17 +34,16 @@ void draw() {
   kinect.getUsers(userList);
   userMap = kinect.userMap();
   
-  if (userList.size() > 0) {
-    userID = userList.get(0);
-    
+  // Entender porque o userList me retorna valores mesmo sem gente em cena.
+  if (userList.size() > 0) {    
+    // Pega contorno da imagem com o código setado para tela cheia
     PImage noBG = getImageWithouthBackground();
-    image(noBG, 0, 0);
-    
+    noBG.resize(width, height);
     ArrayList<Contour> contours = getImageCountour(noBG);
+
     if(contours.size() > 0) {
-      Contour contour = getBiggestContour(contours);
-      //drawContour(contour, 640, 0);
-      sombra.insereFrame(contour);
+      sombra.insereFrame(contours);
+      sombra.exibirUltimaSombra();
     } else {
       if(sombra.contagemDeFrames() > 0) {
         sombras.insereSombra(sombra);
@@ -53,7 +52,7 @@ void draw() {
       }
     }
     
-    sombras.exibeSombra(640, 0);  
+    sombras.exibeSombra(0, 0);  
   } else {
     sombras.inicializaExibicao();
   }
@@ -65,7 +64,7 @@ PImage getImageWithouthBackground() {
   noBG.loadPixels();
   for (int i = 0; i < userMap.length; i++) {
     if (userMap[i] != 0) {
-      noBG.pixels[i] = color(255, 255, 255);
+      noBG.pixels[i] = color(255);
     }
   }
   noBG.updatePixels();  
@@ -76,30 +75,4 @@ PImage getImageWithouthBackground() {
 ArrayList<Contour> getImageCountour(PImage image) {
    opencv.loadImage(image);
    return opencv.findContours();
-}
-
-Contour getBiggestContour(ArrayList<Contour> contours) {
-  float area = MIN_FLOAT;
-  Contour c = contours.get(0); 
-  for (Contour contour : contours) {
-     if (contour.area() > area){
-       c = contour;
-     } 
-  }
-  
-  return c;
-}
-
-void drawContour(Contour contour, int offsetX, int offsetY) {
-  noFill();
-  strokeWeight(3);
-  
-  stroke(0, 255, 0);
-  
-  stroke(255, 0, 0);
-  beginShape();
-  for (PVector point : contour.getPoints()) {
-    vertex(point.x + offsetX, point.y + offsetY);
-  }
-  endShape();
 }

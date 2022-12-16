@@ -1,13 +1,13 @@
 import gab.opencv.*;
 
 class Sombra {
-  ArrayList<Contour> contornos; 
+  ArrayList<ArrayList<Contour>> contornos; 
   
   Sombra() {
-    contornos = new ArrayList<Contour>();
+    contornos = new ArrayList<ArrayList<Contour>>();
   }
   
-  void insereFrame(Contour contorno) {
+  void insereFrame(ArrayList<Contour> contorno) {
     contornos.add(contorno);
   }
   
@@ -20,15 +20,31 @@ class Sombra {
       return false;
     } else {
       noStroke();
-      fill(255);
-      beginShape();
-      for (PVector point : contornos.get(frame).getPoints()) {
-        vertex(point.x + x, point.y + y);
+      fill(0, 0, 255, 128);
+      for(Contour contorno :  contornos.get(frame)){
+        //fill(0, 0, 0, 128);
+        beginShape();
+        for (PVector point : contorno.getPoints()) {
+          vertex(point.x + x, point.y + y);
+        }
+        endShape();
       }
-      endShape();
       
       return true;
     } 
+  }
+
+  void exibirUltimaSombra() {
+    long contagem = contagemDeFrames();
+    if (contagem > 0) {
+      for(Contour contorno : contornos.get(frame)){
+        beginShape();
+        for (PVector point : contorno.getPoints()) {
+          vertex(point.x + x, point.y + y);
+        }
+        endShape();
+      }
+    }
   }
   
   boolean exibirSombraContorno(int frame, int x, int y) {
@@ -37,12 +53,14 @@ class Sombra {
     } else {
       noStroke();
       
-      fill(255);
-      beginShape();
-      for (PVector point : contornos.get(frame).getPoints()) {
-        vertex(point.x + x, point.y + y);
+      for(Contour contorno :  contornos.get(frame)){
+        fill(0);
+        beginShape();
+        for (PVector point : contorno.getPoints()) {
+          vertex(point.x + x, point.y + y);
+        }
+        endShape();
       }
-      endShape();
       
       return true;
     }
