@@ -10,6 +10,7 @@ int userID;
 int[] userMap;
 PImage depthImage;
 IntVector userList;
+color corAtual, corSombra;
 
 Sombras sombras;
 Sombra sombra;
@@ -24,6 +25,9 @@ void setup() {
   sombra = new Sombra();
   sombras = new Sombras();
   opencv = new OpenCV(this, width, height);  
+  
+  corAtual = color(random(255), random(255), random(255), 128);
+  corSombra = color(random(255), random(255), random(255), 128);
 }
 
 void draw() {
@@ -43,16 +47,18 @@ void draw() {
 
     if(contours.size() > 0) {
       sombra.insereFrame(contours);
-      sombra.exibirUltimaSombra();
+      sombra.exibirUltimaSombra(0, 0, corAtual);
     } else {
       if(sombra.contagemDeFrames() > 0) {
         sombras.insereSombra(sombra);
         sombra = new Sombra();
         sombras.inicializaExibicao();
+        corAtual = color(random(255), random(255), random(255), 128);
+        corSombra = color(random(255), random(255), random(255), 128);
       }
     }
     
-    sombras.exibeSombra(0, 0);  
+    sombras.exibeSombra(0, 0, corSombra);  
   } else {
     sombras.inicializaExibicao();
   }

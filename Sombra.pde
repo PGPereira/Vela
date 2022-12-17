@@ -15,14 +15,13 @@ class Sombra {
     return contornos.size();
   }
   
-  boolean exibirSombra(int frame, int x, int y) {
+  boolean exibirSombra(int frame, int x, int y, color c) {
     if(frame >= this.contagemDeFrames()) {
       return false;
     } else {
       noStroke();
-      fill(0, 0, 255, 128);
+      fill(c);
       for(Contour contorno :  contornos.get(frame)){
-        //fill(0, 0, 0, 128);
         beginShape();
         for (PVector point : contorno.getPoints()) {
           vertex(point.x + x, point.y + y);
@@ -34,10 +33,11 @@ class Sombra {
     } 
   }
 
-  void exibirUltimaSombra() {
+  void exibirUltimaSombra(int x, int y, color c) {
     long contagem = contagemDeFrames();
+    fill(c);
     if (contagem > 0) {
-      for(Contour contorno : contornos.get(frame)){
+      for(Contour contorno : contornos.get((int)contagem - 1)){
         beginShape();
         for (PVector point : contorno.getPoints()) {
           vertex(point.x + x, point.y + y);

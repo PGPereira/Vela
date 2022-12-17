@@ -21,9 +21,9 @@ class Sombras {
     sombras.add(sombra);
   }
   
-  void exibeSombra(int x, int y) {
+  void exibeSombra(int x, int y, color c) {
     if(sombrasArmazenadas() > sombra) {
-      if(sombras.get(sombra).exibirSombra(frame, x, y)) {
+      if(sombras.get(sombra).exibirSombra(frame, x, y, c)) {
         frame++;
       } else {
         inicializaExibicao();
